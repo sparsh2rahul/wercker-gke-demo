@@ -47,8 +47,7 @@ deploy-to-kubernetes:
     # `apply` is a good command to use here, as it'll create Kubernetes entities if they are missing.
     - kubectl:
         name: deploy to kubernetes
-        server: $KUBERNETES_MASTER
-        username: $KUBERNETES_USERNAME
-        password: $KUBERNETES_PASSWORD
+        server: $KUBERNETES_ENDPOINT
+        token: $KUBERNETES_TOKEN
         insecure-skip-tls-verify: true
         command: apply -f $WERCKER_OUTPUT_DIR/kubernetes/    
