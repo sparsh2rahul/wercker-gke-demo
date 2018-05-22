@@ -2,9 +2,7 @@ import json
 import argparse
 
 from bottle import Bottle, run, request
-
 app = Bottle()
-
 @app.route('/')
 def get_ip():
     client_ip = request.environ.get('REMOTE_ADDR')
