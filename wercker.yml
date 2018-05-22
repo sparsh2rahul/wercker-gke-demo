@@ -17,10 +17,28 @@ build:
         working-dir: $WERCKER_ROOT
         tag: $WERCKER_GIT_COMMIT
         ports: "8080"
-        username: _json_key
-        password: $GCP_KEY_JSON
-        repository: $GCR_TAG
-        registry: $GCR_HOST
+build:
+    box: python:2.7
+    steps:
+
+    # Check that our application's tests are passing. Since this is a python
+    # application, our entry script will also install the application's dependencies
+    # with Virtualenv
+    - script:
+        name: Nose tests
+        code: bin/tests
+
+    # Take our tested application revision and its dependencies, bake it in to a
+    # Docker image, and push to Docker Hub.
+    - internal/docker-push:
+        entrypoint: bin/get_ip
+        cmd: 0.0.0.0 8080
+        working-dir: $WERCKER_ROOT
+        tag: $WERCKER_GIT_COMMIT
+        ports: "8080"
+        username: $DOCKERHUB_USERNAME
+        password: $DOCKERHUB_PASSWORD
+        repository: $DOCKERHUB_REPO 
 
 deploy-to-kubernetes:
     box: python:2.7
@@ -46,11 +64,10 @@ deploy-to-kubernetes:
     # Kubernetes configuration.
 
     # `apply` is a good command to use here, as it'll create Kubernetes entities if they are missing.
-    - riceo/kubectl:
+    - kubectl:
         name: deploy to kubernetes
         server: $KUBERNETES_MASTER
-        gcloud-key-json: $GCP_KEY_JSON
-        gke-cluster-name: $GKE_CLUSTER_NAME
-        gke-cluster-zone: $GKE_CLUSTER_ZONE
-        gke-cluster-project: $GKE_CLUSTER_PROJECT
-        command: apply -f $WERCKER_OUTPUT_DIR/kubernetes/
+        username: $KUBERNETES_USERNAME
+        password: $KUBERNETES_PASSWORD
+        insecure-skip-tls-verify: true
+        command: apply -f $WERCKER_OUTPUT_DIR/kubernetes/    
