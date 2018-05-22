@@ -19,7 +19,7 @@ build:
         ports: "8080"
         username: $DOCKERHUB_USERNAME
         password: $DOCKERHUB_PASSWORD
-        repository: $DOCKERHUB_REPO  
+        repository: $DOCKERHUB_REPO   
 
 deploy-to-kubernetes:
     box: python:2.7
