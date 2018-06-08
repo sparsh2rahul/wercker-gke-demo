@@ -4,7 +4,7 @@ A simple Python application that uses the Bottle framework to serve a JSON encod
 
 Used as an example application for a tutorial on Wercker I am writing.
 
-````
+```
 usage: get_ip.py [-h] hostname port
 
 HTTP API for returning a visitor's IP address.
@@ -15,7 +15,7 @@ positional arguments:
 
 optional arguments:
   -h, --help  show this help message and exit
-````
+```
 
 Requires `Python 2` `pip` & `virtualenv` to run.
 
